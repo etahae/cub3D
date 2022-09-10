@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:44:44 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 19:44:32 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 20:14:35 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void init_player_attributs(t_player  *p)
 		p->rotation_angle = 0;
 	else if(p->cub_info.player == 'W')
 		p->rotation_angle = PI;
-	p->walk_speed = 15;
+	p->walk_speed = 20;
 	p->turn_speed = 4 * (PI / 180);// 4 degres
 	p->fov_angle = 60 * (PI / 180);
 	p->num_of_rays = p->win_width;

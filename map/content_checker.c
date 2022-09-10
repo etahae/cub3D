@@ -46,7 +46,10 @@ int	content_checker(char *path_name, t_cub_info *cub_info)
 		exit(EXIT_FAILURE);
 	lines_count = lines_counter(path_name);
 	if (!lines_count)
-		map_error("file is empty", EXIT_FAILURE, cub_info);
+	{
+		write(2, "cub3D: file is empty", 21);
+		exit(1);
+	}
 	texture_generator(cub_info, fd);
 	close(fd);
 	return (0);

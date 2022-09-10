@@ -19,20 +19,7 @@ int	map_error(char	*error_message, int error_value, t_cub_info	*cub_info)
 		write(2, "cub3D: ", 7);
 		write(2, error_message, ft_strlen(error_message));
 	}
-	if (cub_info->no)
-		free(cub_info->no);
-	if (cub_info->so)
-		free(cub_info->so);
-	if (cub_info->ea)
-		free(cub_info->ea);
-	if (cub_info->we)
-		free(cub_info->we);
-	if (cub_info->f)
-		free(cub_info->f);
-	if (cub_info->c)
-		free(cub_info->c);
-	if (cub_info->map)
-		freee(cub_info->map);
+	cub_info_struct_free(cub_info);
 	exit(error_value);
 }
 

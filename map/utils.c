@@ -27,13 +27,20 @@ void	freee(char	**pointer)
 
 void	cub_info_struct_free(t_cub_info *cub_info)
 {
-	free(cub_info->no);
-	free(cub_info->so);
-	free(cub_info->ea);
-	free(cub_info->we);
-	free(cub_info->f);
-	free(cub_info->c);
-	freee(cub_info->map);
+	if (cub_info->no)
+		free(cub_info->no);
+	if (cub_info->so)
+		free(cub_info->so);
+	if (cub_info->ea)
+		free(cub_info->ea);
+	if (cub_info->we)
+		free(cub_info->we);
+	if (cub_info->f)
+		free(cub_info->f);
+	if (cub_info->c)
+		free(cub_info->c);
+	if (cub_info->map)
+		freee(cub_info->map);
 }
 
 int	double_pointer_len(char **pointer)
