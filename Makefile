@@ -1,6 +1,6 @@
 NAME = cub3D
 CC = cc
-CFLAGS =
+CFLAGS = -g
 LIBFT = ./libft/libft.a
 MLX = ./mlx/libmlx.a
 HEADER = ./includes/header.h ./map/map.h ./libft/libft.h ./gnl/get_next_line.h
@@ -20,7 +20,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(MLX)
-	@$(CC)  $(CFLAGS) -lmlx -framework OpenGL -framework AppKit -lz $(LIBFT) $(MLX)  $^ -o $@
+	@$(CC)  $(CFLAGS) -lmlx -framework OpenGL -framework AppKit -lz  $(LIBFT) $(MLX)  $^ -o $@
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

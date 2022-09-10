@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 19:04:17 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 15:52:40 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:34:45 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,8 @@
 # include "../gnl/get_next_line.h"
 
 # define PI 3.14159265358979323846
-# define BUFFER_SIZE 1
 
 # define TILE_SIZE 64
-
-# define MAP_NUM_ROWS 14
-# define MAP_NUM_COLS 33
-
-# define WINDOW_WIDTH MAP_NUM_COLS * TILE_SIZE
-# define WINDOW_HEIGHT MAP_NUM_ROWS * TILE_SIZE
-
-# define TEXTURE_WIDTH 64
-# define TEXTURE_HEIGHT 64
 
 typedef struct t_struct{
 	char	*file;
@@ -112,6 +102,8 @@ typedef struct t_textures{
 
 typedef struct t_play
 {
+	int			win_width;
+	int			win_height;
 	double		ray_angle;
 	double		x;
 	double		y;
@@ -142,7 +134,7 @@ typedef struct t_play
 
 int		cclose(t_player  *p);
 int		move_player(t_player *p);
-int		point_in_range(float x, float y);
+int		point_in_range(float x, float y, t_player  *p);
 void	my_mlx_pixel_put(t_player *data, int x, int y, int color);
 void	draw_floor_roof(t_player *p);
 void	alloc_pixels(t_player *p);
@@ -150,7 +142,6 @@ void	rendering_walls(t_player *p);
 double	distance_calc(double x1, double y1, double x2, double y2);
 void	vertical_intersections(t_player *p);
 void	horizontal_intersections(t_player *p);
-int		point_in_range(float x, float y);
 void	find_intersections(t_player *p, int i);
 void	put_player(t_player *p);
 int		moves_of_player(t_player *p);

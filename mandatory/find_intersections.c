@@ -6,15 +6,16 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 19:46:44 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/09 19:49:58 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:32:04 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/header.h"
 
-int	point_in_range(float x, float y)
+int	point_in_range(float x, float y, t_player *p)
 {
-	return (x >= 0 && x <= WINDOW_WIDTH && y >= 0 && y <= WINDOW_HEIGHT);
+	return (x >= 0 && x <= p->win_width
+			&& y >= 0 && y <= p->win_height);
 }
 
 void	normalize_angle(t_player *p)
@@ -32,6 +33,7 @@ double	distance_calc(double x1, double y1, double x2, double y2)
 
 void	find_intersections(t_player *p, int i)
 {
+	 
 	while (i < p->num_of_rays)
 	{
 		normalize_angle(p);

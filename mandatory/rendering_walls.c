@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 21:41:36 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 16:05:42 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:33:40 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ void return_y(t_player *p)
 	int x;
 	int y;
 
-	p->wall.distance_project_plane = (WINDOW_WIDTH / 2) / tan(p->fov_angle / 2);
+	p->wall.distance_project_plane = (p->win_width / 2) / tan(p->fov_angle / 2);
 	p->wall.wall_strip_height = (TILE_SIZE / p->distance[p->wall.i]) * p->wall.distance_project_plane; // calc wall height in screen
 	if (p->wall.x % p->wall.wall_strip_width == 0  && p->wall.x != 0)
 		p->wall.i++;
-	p->wall.wall_top_px = (int)(WINDOW_HEIGHT / 2 - p->wall.wall_strip_height / 2);   // calc start of wall_strip_height start
+	p->wall.wall_top_px = (int)(p->win_height / 2 - p->wall.wall_strip_height / 2);   // calc start of wall_strip_height start
 	p->wall.wall_top_px = p->wall.wall_top_px < 0 ? 0 : p->wall.wall_top_px;// if is negative assagne it the top of screen    
-	p->wall.wall_bottom_px =   (WINDOW_HEIGHT / 2 + p->wall.wall_strip_height / 2); 
-	p->wall.wall_bottom_px = p->wall.wall_bottom_px  > WINDOW_HEIGHT ? WINDOW_HEIGHT : p->wall.wall_bottom_px;// protection
+	p->wall.wall_bottom_px =   (p->win_height / 2 + p->wall.wall_strip_height / 2); 
+	p->wall.wall_bottom_px = p->wall.wall_bottom_px  > p->win_height ? p->win_height : p->wall.wall_bottom_px;// protection
 	 
 	// here we calc the start and the end of wall_strip_height (wall on the screen)
 	// return p->wall.wall_top_px;
@@ -35,7 +35,7 @@ static t_tx *init_rend(t_player *p)
 	t_tx *textures;
 	int i;
 	
-	p->mlx.img = mlx_new_image(p->mlx.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	p->mlx.img = mlx_new_image(p->mlx.mlx, p->win_width, p->win_height);
 	p->mlx.addr = mlx_get_data_addr(p->mlx.img, &p->mlx.bits_per_pixel, &p->mlx.line_length, &p->mlx.endian);
 
 	textures = malloc(sizeof(t_tx) * 4);
@@ -51,7 +51,7 @@ static t_tx *init_rend(t_player *p)
 	}
 	p->wall.i = 0;
 	p->wall.x = 0;
-	p->wall.wall_strip_width = WINDOW_WIDTH / p->num_of_rays;
+	p->wall.wall_strip_width = p->win_width / p->num_of_rays;
 	return textures;
 }
 
@@ -92,7 +92,7 @@ void rendering_walls(t_player *p)
 
 	texture = init_rend(p);
 	
-	while (p->wall.x < WINDOW_WIDTH)
+	while (p->wall.x < p->win_width)
 	{
 		i = 0;
 		return_y(p);	
@@ -105,7 +105,7 @@ void rendering_walls(t_player *p)
 				x_offset = (fmod(p->py[p->wall.i], TILE_SIZE)) * (texture[i].width / TILE_SIZE);
 			else
 				x_offset = (fmod(p->px[p->wall.i], TILE_SIZE)) * (texture[i].width / TILE_SIZE);
-			distance_from_top = (y + (p->wall.wall_strip_height / 2) - (WINDOW_HEIGHT / 2));
+			distance_from_top = (y + (p->wall.wall_strip_height / 2) - (p->win_height / 2));
 			y_offset = distance_from_top * ( (texture[i].height / p->wall.wall_strip_height)); // height instead od width
 			dst = p->mlx.addr + (y * p->mlx.line_length + p->wall.x * (p->mlx.bits_per_pixel / 8));
 			src = texture[i].addr + (y_offset * texture[i].line_length + x_offset * (texture[i].bits_per_pixel / 8));

@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:44:52 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 16:00:29 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 18:26:01 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 
 int move_player(t_player *p)
 {
-	p->distance = malloc(sizeof(double) * p->num_of_rays);   /////////
-	p->ver.distance = malloc(sizeof(double) * p->num_of_rays);///////////
-	p->hor.distance = malloc(sizeof(double) * p->num_of_rays);/////////
-	p->px = malloc(sizeof(double) * p->num_of_rays);//////////
-	p->py = malloc(sizeof(double) * p->num_of_rays);//////////
-	p->if_is_vertical = malloc(sizeof(int) * p->num_of_rays);///////////
+	p->distance = malloc(sizeof(double) * p->num_of_rays);
+	p->ver.distance = malloc(sizeof(double) * p->num_of_rays);
+	p->hor.distance = malloc(sizeof(double) * p->num_of_rays);
+	p->px = malloc(sizeof(double) * p->num_of_rays);
+	p->py = malloc(sizeof(double) * p->num_of_rays);
+	p->if_is_vertical = malloc(sizeof(int) * p->num_of_rays);
 	p->ver.i = 0;
 	p->hor.i = 0;
 	p->ray_angle = p->rotation_angle - (p->fov_angle / 2);
-	p->angle_ray = malloc(sizeof(double) * p->num_of_rays);////////
+	p->angle_ray = malloc(sizeof(double) * p->num_of_rays);
 
-
-	
 	float next_x;
 	float next_y;
 	float move_step = p->walk * p->walk_speed;

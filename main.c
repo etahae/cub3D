@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:44:44 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 16:05:28 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:41:44 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void init_player_attributs(t_player  *p)
 {
-	p->x = (double)(p->cub_info.player_y * 64);	
-	p->y =  (double)(p->cub_info.player_x * 64);	
+	p->x = (double)(p->cub_info.player_y * TILE_SIZE);	
+	p->y =  (double)(p->cub_info.player_x * TILE_SIZE);	
 	p->turn = 0;
 	p->walk = 0;
 	p->move = 0;
@@ -30,7 +30,7 @@ void init_player_attributs(t_player  *p)
 	p->walk_speed = 15;
 	p->turn_speed = 4 * (PI / 180);// 4 degres
 	p->fov_angle = 60 * (PI / 180);
-	p->num_of_rays = WINDOW_WIDTH;
+	p->num_of_rays = p->win_width;
 } 
 
 int cclose(t_player  *p)
@@ -44,8 +44,6 @@ int main(int argc, char *argv[])
 	t_player pl;
 	t_player  *p = &pl;
 
-	p->mlx.mlx = mlx_init();
-	p->mlx.mlx_win = mlx_new_window(p->mlx.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D");
  	if (argc != 2)
 	{
 		write(2, "cub3D: Invalid number of arguments", 35);
@@ -53,6 +51,10 @@ int main(int argc, char *argv[])
 	}
 	name_checker(argv[1]);
 	content_checker(argv[1],&p->cub_info);
+	p->win_height = p->cub_info.map_rows * 64;
+	p->win_width = p->cub_info.map_columns * 64;
+	p->mlx.mlx = mlx_init();
+	p->mlx.mlx_win = mlx_new_window(p->mlx.mlx, p->win_width, p->win_height, "cub3D");
  	init_player_attributs(p);
 	move_player(p);
 	moves_of_player(p);

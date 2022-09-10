@@ -13,14 +13,14 @@ void draw_floor_roof(t_player *p)
 {
     int y;
 
-    p->wall.floor_px = (int)(WINDOW_HEIGHT / 2 + p->wall.wall_strip_height / 2);
+    p->wall.floor_px = (int)(p->win_height / 2 + p->wall.wall_strip_height / 2);
     y = p->wall.floor_px;
-    while (y < WINDOW_HEIGHT)
+    while (y < p->win_height)
     {
         my_mlx_pixel_put(p, p->wall.x , y, p->cub_info.f_int);
         y++;
     }
-    p->wall.roof_px = (int)(WINDOW_HEIGHT / 2 - p->wall.wall_strip_height / 2);
+    p->wall.roof_px = (int)(p->win_height / 2 - p->wall.wall_strip_height / 2);
     y = 0;
     while (y < p->wall.roof_px)
     { 

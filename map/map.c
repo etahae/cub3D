@@ -82,7 +82,12 @@ void	no_opened_space(t_cub_info *cub_info)
 				cub_info->player = cub_info->map[x][y];
 			}
 		}
+		if (y > cub_info->map_columns)
+			cub_info->map_columns = y;
 	}
+	cub_info->map_rows = x - 1;
+	if (player_count == 0)
+		map_error("no player found", EXIT_FAILURE, cub_info);
 }
 
 void	get_map(char *line, int fd, t_cub_info *cub_info)
@@ -90,6 +95,8 @@ void	get_map(char *line, int fd, t_cub_info *cub_info)
 	char	*map;
 
 	map = NULL;
+	cub_info->map_rows = 0;
+	cub_info->map_columns = 0;
 	while (line)
 	{
 		check_before_join(line, cub_info);

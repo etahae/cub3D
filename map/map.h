@@ -35,6 +35,8 @@ typedef struct s_cub_info{
 	int		player_x;
 	int		player_y;
 	char	player;
+	int		map_rows;
+	int		map_columns;
 }	t_cub_info;
 
 void	name_checker(char *path_name);

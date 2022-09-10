@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 19:50:08 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/09 19:51:01 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:20:04 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	wall_intersect_horizontal(t_player *p, int if_is_facing_up)
 	if (if_is_facing_up)
 		p->hor.next_y--;
 	p->hor.found_wall = 0;
-	while (point_in_range(p->hor.next_x, p->hor.next_y))
+	while (point_in_range(p->hor.next_x, p->hor.next_y, p))
 	{
 		if (p->cub_info.map[(int)(p->hor.next_y / TILE_SIZE)]
 		[(int)(p->hor.next_x / TILE_SIZE)] == '1')
@@ -27,7 +27,6 @@ void	wall_intersect_horizontal(t_player *p, int if_is_facing_up)
 			p->hor.found_wall = 1;
 			p->hor.wall_hit_y = p->hor.next_y;
 			p->hor.wall_hit_x = p->hor.next_x;
-			
 			break;
 		}
 		else
@@ -37,6 +36,8 @@ void	wall_intersect_horizontal(t_player *p, int if_is_facing_up)
 		}
 	}
 	
+    
+ 
 	p->hor.distance[p->hor.i] = (p->hor.found_wall) ? distance_calc(p->x,p->y,p->hor.next_x,p->hor.next_y) : 10000000.444;
 	p->hor.i++;
 

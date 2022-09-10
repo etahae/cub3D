@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:53:07 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 15:53:08 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:15:51 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    wall_intersect_vertical(t_player *p,int if_is_facing_left)
         p->ver.next_x--;
  
     p->ver.found_wall = 0;
-    while (point_in_range(p->ver.next_x,p->ver.next_y))
+    while (point_in_range(p->ver.next_x,p->ver.next_y, p))
     {
 
         if(p->cub_info.map[(int)(p->ver.next_y / TILE_SIZE)][(int)(p->ver.next_x / TILE_SIZE)] == '1')
@@ -40,7 +40,6 @@ void    wall_intersect_vertical(t_player *p,int if_is_facing_left)
             p->ver.next_x += p->ver.x_step;
         }
     }
-   
     p->ver.distance[p->ver.i] = (p->ver.found_wall) ? distance_calc(p->x,p->y,p->ver.next_x,p->ver.next_y) : 10000000.444;
     p->ver.i++;
 }
