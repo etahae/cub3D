@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 15:44:44 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/10 19:41:44 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 19:44:32 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int main(int argc, char *argv[])
 	}
 	name_checker(argv[1]);
 	content_checker(argv[1],&p->cub_info);
-	p->win_height = p->cub_info.map_rows * 64;
-	p->win_width = p->cub_info.map_columns * 64;
+	p->win_height = p->cub_info.map_rows * TILE_SIZE;
+	p->win_width = p->cub_info.map_columns * TILE_SIZE;
 	p->mlx.mlx = mlx_init();
 	p->mlx.mlx_win = mlx_new_window(p->mlx.mlx, p->win_width, p->win_height, "cub3D");
  	init_player_attributs(p);
