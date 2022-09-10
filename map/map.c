@@ -79,6 +79,7 @@ void	no_opened_space(t_cub_info *cub_info)
 					map_error("only 1 player allowed", EXIT_FAILURE, cub_info);
 				cub_info->player_x = x;
 				cub_info->player_y = y;
+				cub_info->player = cub_info->map[x][y];
 			}
 		}
 	}
@@ -93,11 +94,12 @@ void	get_map(char *line, int fd, t_cub_info *cub_info)
 	{
 		check_before_join(line, cub_info);
 		map = ft_strjoin(map, line);
-		line = get_next_line(fd);
 		free(line);
+		line = get_next_line(fd);
 	}
 	cub_info->map = ft_split(map, '\n');
 	free(map);
+	free(line);
 	border_walls_check(cub_info);
 	no_opened_space(cub_info);
 }

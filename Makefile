@@ -1,7 +1,8 @@
 NAME = cub3D
 CC = cc
-CFLAGS = -g
+CFLAGS =
 LIBFT = ./libft/libft.a
+MLX = ./mlx/libmlx.a
 HEADER = ./includes/header.h ./map/map.h ./libft/libft.h ./gnl/get_next_line.h
 SRC = main.c \
 	./mandatory/moves_of_player.c \
@@ -18,8 +19,8 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)   $(LIBFT)
-	@$(CC)  $(CFLAGS) -lmlx -framework OpenGL -framework AppKit  libft/libft.a  $^ -o $@
+$(NAME): $(OBJ) $(LIBFT) $(MLX)
+	@$(CC)  $(CFLAGS) -lmlx -framework OpenGL -framework AppKit -lz $(LIBFT) $(MLX)  $^ -o $@
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -27,8 +28,12 @@ $(NAME): $(OBJ)   $(LIBFT)
 $(LIBFT) :
 	@$(MAKE) -C ./libft
 
+$(MLX) :
+	@$(MAKE) -C ./mlx
+
 clean :
 	@$(MAKE) clean -C ./libft
+	@$(MAKE) clean -C ./mlx
 	@rm -rf $(OBJ)
 
 fclean : clean

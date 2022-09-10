@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 19:04:17 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/09 19:13:19 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/10 15:52:40 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include <mlx.h>
-# include <math.h> 
-
+# include <math.h>
+# include "../mlx/mlx.h"
 # include "../libft/libft.h"
 # include "../map/map.h"
 # include "../gnl/get_next_line.h"
-
 
 # define PI 3.14159265358979323846
 # define BUFFER_SIZE 1
@@ -38,7 +36,7 @@
 
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
- 
+
 typedef struct t_struct{
 	char	*file;
 	int		fd;
@@ -92,22 +90,25 @@ typedef struct t_wall{
 typedef struct t_mini{
 	void	*img;
 	char	*addr;
-	void	*img_px;
-	char	*addr_px;
-	void	*img_px_2;
-	char	*addr_px_2;
+	int		width;
+	int		height;
 	void	*mlx;
 	void	*mlx_win;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	int		sl;
-	int		l;
-	int		bpp;
-	int		sl2;
-	int		l2;
-	int		bpp2;
 }t_mlx;
+
+typedef struct t_textures{
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	void	*mlx;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}t_tx;
 
 typedef struct t_play
 {
@@ -139,6 +140,8 @@ typedef struct t_play
 	t_cub_info	cub_info;
 }t_player;
 
+int		cclose(t_player  *p);
+int		move_player(t_player *p);
 int		point_in_range(float x, float y);
 void	my_mlx_pixel_put(t_player *data, int x, int y, int color);
 void	draw_floor_roof(t_player *p);
