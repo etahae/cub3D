@@ -52,5 +52,6 @@ void	rgb_check(t_cub_info	*cub_info);
 int		skip_front_space(char	*line);
 int		skip_back_space(char	*line);
 void	invalid_map(t_cub_info	*cub_info, int x, int y);
+int		is_player(char c);
 
 #endif

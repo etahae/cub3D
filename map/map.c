@@ -34,13 +34,6 @@ void	border_walls_check(t_cub_info	*cub_info)
 			map_error("side wall isn't compatible", EXIT_FAILURE, cub_info);
 }
 
-int	is_player(char c)
-{
-	if (c != 'W' && c != 'S' && c != 'N' && c != 'E')
-		return (0);
-	return (1);
-}
-
 void	check_before_join(char	*line, t_cub_info *cub_info)
 {
 	int	x;
@@ -57,6 +50,22 @@ void	check_before_join(char	*line, t_cub_info *cub_info)
 	}
 }
 
+void	player_attributes_init(t_cub_info *cub_info, int x, int y,
+								int *player_count)
+{
+	if (cub_info->map[x][y] == '0' || is_player(cub_info->map[x][y]))
+		invalid_map(cub_info, x, y);
+	if (is_player(cub_info->map[x][y]))
+	{
+		*player_count = *player_count + 1;
+		if (*player_count > 1)
+			map_error("only 1 player allowed", EXIT_FAILURE, cub_info);
+		cub_info->player_x = x;
+		cub_info->player_y = y;
+		cub_info->player = cub_info->map[x][y];
+	}
+}
+
 void	no_opened_space(t_cub_info *cub_info)
 {
 	int		x;
@@ -69,20 +78,8 @@ void	no_opened_space(t_cub_info *cub_info)
 	{
 		y = -1;
 		while (cub_info->map[x][++y])
-		{
-			if (cub_info->map[x][y] == '0' || is_player(cub_info->map[x][y]))
-				invalid_map(cub_info, x, y);
-			if (is_player(cub_info->map[x][y]))
-			{
-				player_count++;
-				if (player_count > 1)
-					map_error("only 1 player allowed", EXIT_FAILURE, cub_info);
-				cub_info->player_x = x;
-				cub_info->player_y = y;
-				cub_info->player = cub_info->map[x][y];
-			}
-		}
-		if (y > cub_info->map_columns)
+			player_attributes_init(cub_info, x, y, &player_count);
+		if (y > (size_t)cub_info->map_columns)
 			cub_info->map_columns = y;
 	}
 	cub_info->map_rows = x - 1;

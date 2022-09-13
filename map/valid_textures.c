@@ -6,7 +6,7 @@
 /*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 09:25:51 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/09 18:58:39 by tnamir           ###   ########.fr       */
+/*   Updated: 2022/09/13 14:50:29 by tnamir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	rgb_check(t_cub_info	*cub_info)
 	coma_count_fct(cub_info);
 	c = ft_split(cub_info->c, ',');
 	f = ft_split(cub_info->f, ',');
+	if ((double_pointer_len(c) != 3) || (double_pointer_len(f) != 3))
+		map_error("invalid rgb configuration", EXIT_FAILURE, cub_info);
 	valid_rgb(c, f, cub_info);
 	cub_info->c_int = (ft_atoi(c[0]) << 16)
 		+ (ft_atoi(c[1]) << 8) + ft_atoi(c[2]);
