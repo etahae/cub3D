@@ -23,7 +23,7 @@ void	texture_nuller(t_cub_info *cub_info)
 	cub_info->map = NULL;
 }
 
-void	texture_assigner(t_cub_info *cub_info, char	**texture)
+void	texture_assigner(t_cub_info *cub_info, char	**texture, int *counter)
 {
 	if (!ft_strncmp(texture[0], "NO", 3))
 		cub_info->no = ft_strdup(texture[1]);
@@ -39,7 +39,8 @@ void	texture_assigner(t_cub_info *cub_info, char	**texture)
 		cub_info->c = ft_strdup(texture[1]);
 	else
 		map_error("invalid element in file", EXIT_FAILURE, cub_info);
-	if (texture[2] && ft_strncmp(texture[2], "\n", 2))
+	*counter = *counter + 1;
+	if ((texture[2] && ft_strncmp(texture[2], "\n", 2)))
 		map_error("invalid element in file", EXIT_FAILURE, cub_info);
 }	
 
@@ -57,7 +58,8 @@ int	texture_checker(char	*texture, t_cub_info *cub_info)
 	return (1);
 }
 
-char	*texture_assigner_caller(char	*line, t_cub_info *cub_info, int fd)
+char	*texture_assigner_caller(char	*line, t_cub_info *cub_info,
+	int fd, int *counter)
 {
 	char	**texture;
 
@@ -77,7 +79,7 @@ char	*texture_assigner_caller(char	*line, t_cub_info *cub_info, int fd)
 				freee(texture);
 				break ;
 			}
-			texture_assigner(cub_info, texture);
+			texture_assigner(cub_info, texture, counter);
 			freee(texture);
 			free(line);
 			line = get_next_line(fd);
@@ -89,13 +91,17 @@ char	*texture_assigner_caller(char	*line, t_cub_info *cub_info, int fd)
 void	texture_generator(t_cub_info *cub_info, int fd)
 {
 	char	*line;
+	int		counter;
 
+	counter = 0;
 	line = get_next_line(fd);
 	texture_nuller(cub_info);
-	line = texture_assigner_caller(line, cub_info, fd);
+	line = texture_assigner_caller(line, cub_info, fd, &counter);
 	if (!cub_info->c || !cub_info->f || !cub_info->no
 		|| !cub_info->we || !cub_info->so || !cub_info->ea)
 		map_error("a texture element is missing", EXIT_FAILURE, cub_info);
+	if (counter > 6)
+		map_error("duplicated texture elements", EXIT_FAILURE, cub_info);
 	check_texture_files(cub_info);
 	rgb_check(cub_info);
 	get_map(line, fd, cub_info);
