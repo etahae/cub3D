@@ -1,10 +1,10 @@
-NO ./images/bricks.xpm
-SO ./images/bricks.xpm
-WE ./images/bricks.xpm
-EA ./images/bricks.xpm
+NO ./images/north_.xpm
+SO ./images/south_.xpm
+WE ./images/east_.xpm
+EA ./images/west_.xpm
 
-F 164,116,73
-C 25,25,112
+F 150,150,150
+C 50,50,50
 
 
 
