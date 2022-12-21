@@ -42,7 +42,8 @@ void	check_before_join(char	*line, t_cub_info *cub_info)
 	while (line[++x])
 	{
 		if (line[0] == '\n' || (line[x] != '1' && line[x] != '0'
-				&& line[x] != ' ' && line[x] != '\n' && !is_player(line[x])))
+				&& line[x] != ' ' && line[x] != '\n'
+				&& !is_player(line[x])))
 		{
 			map_error("map isn't compatible", EXIT_FAILURE, cub_info);
 			free(line);

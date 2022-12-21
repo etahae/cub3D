@@ -3,66 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tnamir <tnamir@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aourhzal <aourhzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/10 15:44:44 by tnamir            #+#    #+#             */
-/*   Updated: 2022/09/11 18:47:29 by tnamir           ###   ########.fr       */
+/*   Created: 2022/08/04 13:09:27 by aourhzal          #+#    #+#             */
+/*   Updated: 2022/10/27 15:09:16 by aourhzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/header.h"
+#include "./cub.h"
 
-void	init_player_attributs(t_player *p)
+int	ft_exit(t_game *game)
 {
-	p->x = (double)(p->cub_info.player_y * TILE_SIZE);
-	p->y = (double)(p->cub_info.player_x * TILE_SIZE);
-	p->turn = 0;
-	p->walk = 0;
-	p->move = 0;
-	if (p->cub_info.player == 'S')
-		p->rotation_angle = PI / 2;
-	else if (p->cub_info.player == 'N')
-		p->rotation_angle = (3 * PI) / 2;
-	else if (p->cub_info.player == 'E')
-		p->rotation_angle = 0;
-	else if (p->cub_info.player == 'W')
-		p->rotation_angle = PI;
-	p->walk_speed = 20;
-	p->turn_speed = 10 * (PI / 180);
-	p->fov_angle = 60 * (PI / 180);
-	p->num_of_rays = p->win_width;
-}
-
-int	cclose(t_player *p)
-{
-	cub_info_struct_free(&p->cub_info);
-	mlx_clear_window(p->mlx.mlx, p->mlx.mlx_win);
+	cub_info_struct_free(&game->cub_info);
 	exit(0);
 }
 
-int	main(int argc, char *argv[])
+float	find_angle(char a)
 {
-	t_player	pl;
-	t_player	*p;
+	if (a == 'S')
+		return (0.5 * PI);
+	else if (a == 'N')
+		return (1.5 * PI);
+	else if (a == 'W')
+		return (PI);
+	else
+		return (0);
+}	
 
-	p = &pl;
-	if (argc != 2)
-	{
-		write(2, "cub3D: Invalid number of arguments", 35);
-		return (1);
-	}
-	name_checker(argv[1]);
-	content_checker(argv[1], &p->cub_info);
-	p->win_height = p->cub_info.map_rows * TILE_SIZE;
-	p->win_width = p->cub_info.map_columns * TILE_SIZE;
-	p->mlx.mlx = mlx_init();
-	p->mlx.mlx_win = mlx_new_window(p->mlx.mlx,
-			p->win_width, p->win_height, "cub3D");
-	init_player_attributs(p);
-	move_player(p, 0.0, 0.0, 0.0);
-	moves_of_player(p);
-	mlx_hook(p->mlx.mlx_win, 17, 0, cclose, p);
-	mlx_loop(p->mlx.mlx);
-	cub_info_struct_free(&p->cub_info);
-	return (0);
+void	init_parse(t_game *game)
+{
+	game->map = game->cub_info.map;
+	game->maplen = game->cub_info.map_rows + 1;
+	game->p.x = game->cub_info.player_y * WALL_DIM + 4;
+	game->p.y = game->cub_info.player_x * WALL_DIM + 4;
+	game->p.a = find_angle(game->cub_info.player);
+	game->p.dx = cos(game->p.a) * 5;
+	game->p.dy = sin(game->p.a) * 5;
+}
+
+void	set_txts_img(t_game *game)
+{
+	int		i;
+
+	game->txtr[0].img = mlx_xpm_file_to_image(game->mlx_ptr, game->cub_info.no,
+			&game->txtr[0].width, &game->txtr[0].height);
+	game->txtr[1].img = mlx_xpm_file_to_image(game->mlx_ptr, game->cub_info.so,
+			&game->txtr[1].width, &game->txtr[1].height);
+	game->txtr[2].img = mlx_xpm_file_to_image(game->mlx_ptr, game->cub_info.we,
+			&game->txtr[2].width, &game->txtr[2].height);
+	game->txtr[3].img = mlx_xpm_file_to_image(game->mlx_ptr, game->cub_info.ea,
+			&game->txtr[3].width, &game->txtr[3].height);
+	if (!game->txtr[0].img || !game->txtr[1].img || !game->txtr[2].img
+		|| !game->txtr[3].img)
+		map_error("corrupted texture files", EXIT_FAILURE, &game->cub_info);
+	i = -1;
+	while (++i < 4)
+		game->txtr[i].addr = mlx_get_data_addr(game->txtr[i].img,
+				&game->txtr[i].bpp, &game->txtr[i].line_length,
+				&game->txtr[i].endian);
+}
+
+int	main(int ac, char **av)
+{
+	t_game	game;
+
+	if (ac != 2)
+		return (0);
+	name_checker(av[1]);
+	content_checker(av[1], &game.cub_info);
+	init_parse(&game);
+	game.mlx_ptr = mlx_init();
+	game.win = mlx_new_window(game.mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "CUB3D");
+	set_txts_img(&game);
+	game.img.img = mlx_new_image(game.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	game.img.addr = mlx_get_data_addr(game.img.img,
+			&game.img.bpp, &game.img.line_length, &game.img.endian);
+	draw_map(&game);
+	mlx_hook(game.win, 02, 0, hook, &game);
+	mlx_hook(game.win, 17, 0, ft_exit, &game);
+	mlx_loop(game.mlx_ptr);
 }
